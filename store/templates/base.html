@@ -1,3 +1,5 @@
+<!-- base.html -->
+
 <!doctype html>
 <html lang="en">
 
@@ -17,14 +19,16 @@
     crossorigin="anonymous">
 
   <style>
+    /* Custom styling */
+    body {
+      background-color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+    }
+
     .navbar-brand {
-        
-      font-family: 'Alfa Slab One', cursive;
-      font-size: xx-large;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #008000; /* Green color for the brand */
+      font-family: 'Pacifico', cursive;
+      font-size: 40px;
+      color: #1abc9c;
     }
 
     .navbar-nav {
@@ -41,55 +45,76 @@
 
     /* Custom button styles */
     .btn-custom {
-      background-color: lightgrey; /* Green color for buttons */
-      
+      background-color: #3498db;
+      color: #fff;
+      border-radius: 25px;
+      font-weight: bold;
+      padding: 10px 20px;
+      transition: background-color 0.3s;
     }
 
     .btn-custom:hover {
-      background-color: lightgrey; /* Darker green color on hover */
-      border-color: blue;
+      background-color: #2980b9;
+      border-color: #2980b9;
+    }
+
+    /* Cart badge */
+    .badge {
+      background-color: #e74c3c;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    /* Main content styling */
+    .content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
     }
   </style>
 
+  {% block extra_head %}{% endblock %} <!-- Additional CSS or scripts can be included here -->
 </head>
 
 <body>
 
   <nav class="navbar navbar-light navbar-expand-lg bg-white">
     <div class="container">
-      <a class="navbar-brand" href="/store">
-        Venus Fly Traps R' Us
-      </a>
-      <ul class="navbar-nav mr-auto cart">
-        <li class="nav-item">
-          <a class="nav-link" href="/cart">
-            <i class="fas fa-shopping-cart"></i> Cart
-            <span class="badge badge-success">{{request.session.cart.keys|length}}</span>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto login-signup">
-        {% if request.session.customer %}
-        <li class="nav-item">
-          <a class="btn btn-custom" href="/orders">Orders</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-custom" href="/logout">Logout</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="btn btn-custom" href="/signup">Signup</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-custom" href="/login">Login</a>
-        </li>
-        {% endif %}
-      </ul>
+        <a class="navbar-brand" href="/store">
+            <img src="data:image/png;base64,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"
+            alt="Venus Flytrap" style="width: 65px; height: 65px; margin-right: 15px;">
+            Flytrap Emporium
+        </a>
+        <ul class="navbar-nav mr-auto cart">
+            <li class="nav-item">
+                <a class="nav-link" href="/cart">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="badge badge-success">{{ cart_items_count }}</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto login-signup">
+            <li class="nav-item">
+                <a class="btn btn-custom" href="/orders">Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-custom" href="/logout">Logout</a>
+            </li>
+        </ul>
     </div>
-  </nav>
+</nav>
+
 
   <div class="container mt-5">
-    {% block content %}{% endblock %}
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
   </div>
 
   <!-- Optional JavaScript -->
@@ -103,6 +128,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
+  {% block extra_scripts %}{% endblock %} <!-- Additional JavaScript can be included here -->
 </body>
 
 </html>
