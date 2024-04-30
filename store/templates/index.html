@@ -4,99 +4,106 @@
 
 {% load cart %}
 {% load custom_filter %}
-<style>/* CSS */
-	.list-group-item {
-		position: relative;
-	}
-	
-	.list-group-item::after {
-		content: attr(title);
-		position: absolute;
-		bottom: 100%; /* Position the tooltip above the element */
-		left: 50%; /* Position the tooltip at the center of the element */
-		transform: translateX(-0%); /* Center the tooltip horizontally */
-		padding: 5px;
-		background-color: #333;
-		color: #fff;
-		border-radius: 3px;
-		font-size: 16px;
-		white-space: wrap;
-		opacity: 0; /* Hide the tooltip by default */
-		transition: opacity 0.3s ease; /* Add a transition effect */
-	}
-	
-	.list-group-item:hover::after {
-		opacity: 1; /* Show the tooltip on hover */
-	}</style>
-<!-- body -->
+
+<style>
+    /* CSS */
+    .list-group-item {
+        position: relative;
+    }
+
+    .list-group-item::after {
+        content: attr(title);
+        position: absolute;
+        bottom: 100%; /* Position the tooltip above the element */
+        left: 50%; /* Position the tooltip at the center of the element */
+        transform: translateX(-50%); /* Center the tooltip horizontally */
+        padding: 5px;
+        background-color: #333;
+        color: #fff;
+        border-radius: 3px;
+        font-size: 16px;
+        white-space: wrap;
+        opacity: 0; /* Hide the tooltip by default */
+        transition: opacity 0.3s ease; /* Add a transition effect */
+    }
+
+    .list-group-item:hover::after {
+        opacity: 1; /* Show the tooltip on hover */
+    }
+
+    /* Crazy graphics */
+    .product-image {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        transition: transform 0.5s ease;
+    }
+
+    .product-image:hover img {
+        transform: scale(1.2);
+    }
+</style>
+
 <div class="container-fluid mt-3">
-	<div class="row">
+    <div class="row">
+        <!-- filter -->
+        <div class="col-lg-3 mx-auto">
+            <div class="list-group">
+                <a href="/" class="list-group-item list-group-item-action btn btn-outline-success">All Plants</a>
+                {% for category in categories %}
+                    <a href="/?category={{category.id}}"
+                       class="list-group-item list-group-item-action btn btn-outline-success"
+                       >
+                        {{category.name}}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
 
+        <!-- all products -->
+        <div id='products' class="col-lg-9 mx-auto">
+            <div class="row mx-auto">
+                {% for product in products %}
+                    <div class="card mx-auto mb-3" id="{{product.id}}" style="width: 18rem;">
+                        <div class="product-image">
+                            <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-title">{{product.name}}</p>
+                            <p class="card-text"><b>{{product.price|currency}}</b></p>
+                        </div>
 
-		<!-- filter -->
-
-		<div class="col-lg-3 mx-auto">
-			<div class="list-group">
-
-				<a href="/" class="list-group-item list-group-item-action btn btn-outline-success">All Products</a>
-
-				{% for category in categories %}
-				<a href="/?category={{category.id}}"
-					class="list-group-item list-group-item-action btn btn-outline-success"
-					title="{{category.description}}">
-					{{category.name}}
-				</a>
-				{% endfor %}
-			</div>
-		</div>
-
-		<!-- all products -->
-		<div id='products' class="col-lg-9 mx-auto">
-			<div class="row mx-auto">
-				{% for product in products %}
-				<div class="card mx-auto mb-3" id={{product.id}} style="width: 18rem;">
-					<img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
-					<div class="card-body">
-						<p class="card-title">{{product.name}}</p>
-						<p class="card-text"><b>{{product.price|currency}}</b></p>
-						<!-- {{product | is_in_cart:request.session.cart }} -->
-					</div>
-
-					<div class="card-footer p-0 no-gutters">
-
-						{% if product|is_in_cart:request.session.cart %}
-						<div class="row no-gutters">
-							<form action="/#{{product.id}}" class="col-2 " method="post">
-								{% csrf_token %}
-								<input hidden type="text" name='product' value='{{product.id}}'>
-								<input hidden type="text" name='remove' value='True'>
-								<input type="submit" value=" - " class="btn btn-block btn-success border-right">
-							</form>
-							<div class="text-center col btn btn-success">{{product|cart_quantity:request.session.cart}} in Cart</div>
-							<form action="/#{{product.id}}" class="col-2 " method="post">
-								{% csrf_token %}
-								<input hidden type="text" name='product' value='{{product.id}}'>
-								<input type="submit" value=" + " class="btn btn-block btn-success border-left">
-							</form>
-						</div>
-						{% else %}
-						<form action="/#{{product.id}}" method="POST" class="btn-block">
-							{% csrf_token %}
-							<input hidden type="text" name='product' value='{{product.id}}'>
-							<input type="submit" class="float-right btn btn-success form-control"
-								value="Add To Cart">
-						</form>
-						{% endif %}
-
-					</div>
-
-				</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
+                        <div class="card-footer p-0 no-gutters">
+                            {% if product|is_in_cart:request.session.cart %}
+                                <div class="row no-gutters">
+                                    <form action="/#{{product.id}}" class="col-2 " method="post">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name='product' value='{{product.id}}'>
+                                        <input hidden type="text" name='remove' value='True'>
+                                        <input type="submit" value=" - " class="btn btn-block btn-success border-right">
+                                    </form>
+                                    <div class="text-center col btn btn-success">{{product|cart_quantity:request.session.cart}} in Cart</div>
+                                    <form action="/#{{product.id}}" class="col-2 " method="post">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name='product' value='{{product.id}}'>
+                                        <input type="submit" value=" + " class="btn btn-block btn-success border-left">
+                                    </form>
+                                </div>
+                            {% else %}
+                                <form action="/#{{product.id}}" method="POST" class="btn-block">
+                                    {% csrf_token %}
+                                    <input hidden type="text" name='product' value='{{product.id}}'>
+                                    <input type="submit" class="float-right btn btn-success form-control" value="Add To Cart">
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
-
-
 
 {% endblock %}

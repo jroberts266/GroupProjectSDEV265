@@ -1,3 +1,5 @@
+<!-- base.html -->
+
 <!doctype html>
 <html lang="en">
 
@@ -8,67 +10,117 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
 
-    <nav class="one-edge-shadow navbar navbar-light sticky-top navbar-expand-lg text-white">
-      <a class="navbar-brand ms-3 text-dark " href="/">
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-  
-          <!-- Apply text-center class to center the text -->
-          <h1 class="text-center">
-              <a class="nav-link text-green " href="/store">Venus Fly Traps R' Us</a>
-          </h1>
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+    crossorigin="anonymous">
+
+  <style>
+    /* Custom styling */
+    body {
+      background-color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .navbar-brand {
+      font-family: 'Pacifico', cursive;
+      font-size: 40px;
+      color: #1abc9c;
+    }
+
+    .navbar-nav {
+      margin: 0;
+    }
+
+    .navbar-nav.cart {
+      margin-left: 10px;
+    }
+
+    .navbar-nav.login-signup {
+      margin-right: 10px;
+    }
+
+    /* Custom button styles */
+    .btn-custom {
+      background-color: #3498db;
+      color: #fff;
+      border-radius: 25px;
+      font-weight: bold;
+      padding: 10px 20px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-custom:hover {
+      background-color: #2980b9;
+      border-color: #2980b9;
+    }
+
+    /* Cart badge */
+    .badge {
+      background-color: #e74c3c;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    /* Main content styling */
+    .content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %} <!-- Additional CSS or scripts can be included here -->
+</head>
+
+<body>
+
+  <nav class="navbar navbar-light navbar-expand-lg bg-white">
+    <div class="container">
+      <a class="navbar-brand" href="/store">
+        Venus Fly Traps R' Us
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-  
-              </li>
-          </ul>
-  
-          <ul class=" navbar-nav my-2 my-lg-0">
-              <li class="nav-item active">
-                  <a class="nav-link" href="/cart">Cart 
-                      <span class="badge badge-success">{{request.session.cart.keys|length}}</span>
-                      <span class="sr-only">(current)</span>
-                  </a>
-              </li>
-  
-              {% if request.session.customer %}
-  
-              <li class="nav-item active ">
-                  <a class="nav-link" href="/orders">Orders<span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item active ">
-                  <a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a>
-              </li>
-              {% else %}
-  
-              <li class="nav-item active">
-                  <a class="nav-link" href="/signup">Signup<span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item active">
-                  <a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a>
-              </li>
-              {% endif %}
-          </ul>
-      </div>
-  </nav>
-  
+      <ul class="navbar-nav mr-auto cart">
+        <li class="nav-item">
+          <span class="badge badge-success">{{request.session.cart.keys|length}}</span>
 
-
+          <a class="nav-link" href="/cart">
+            <i class="fas fa-shopping-cart"></i> Cart
+          </a>
+        </li>
       </ul>
-
-
+      <ul class="navbar-nav ml-auto login-signup">
+        {% if request.session.customer %}
+        <li class="nav-item">
+          <a class="btn btn-custom" href="/orders">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-custom" href="/logout">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="btn btn-custom" href="/signup">Signup</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-custom" href="/login">Login</a>
+        </li>
+        {% endif %}
+      </ul>
     </div>
   </nav>
-  <!---->
-  {% block content %}{% endblock %}
+
+  <div class="container mt-5">
+    {% block content %}{% endblock %}
+  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
