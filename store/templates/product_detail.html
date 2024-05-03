@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <style>
+        /* CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .product-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .product-info img {
+            display: block;
+            margin: 0 auto;
+            width: 100%; /* Ensure all images take up the full width of their container */
+            max-width: 300px; /* Limit the maximum width of the image */
+            height: auto;
+            border: 2px solid #ccc; /* Add a border around the image */
+            border-radius: 5px;
+            padding: 5px; /* Add some padding to the border */
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+
+        .product-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'homepage' %}" class="home-button">
+            <h1 style="font-family: 'Pacifico', cursive ; font-size: 47px;"><img src="https://cdn-icons-png.flaticon.com/512/6284/6284806.png" style="width: 50px; height: 50px; padding-right: 20px;">FlyTrap Emporium </h1>
+            <i class="fas fa-home"></i>
+        </a>
+
+
+        <h1 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-size: 33px;">{{ product.name }}</h1>
+        <div class="product-info">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" sty>
+            <p style="margin-top: 30px;"><strong>Price:</strong> ${{ product.price }}</p>
+            <p><strong>Category:</strong> {{ product.category }}</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            <p><strong>Species:</strong> {{ product.species }}</p>
+        </div>
+        <!-- Additional information or actions can be added here -->
+    </div>
+</body>
+</html>

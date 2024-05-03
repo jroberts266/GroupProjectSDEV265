@@ -76,6 +76,25 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       margin-top: 20px;
+
+          /* Media Queries */
+    @media (max-width: 767px) { /* Small devices (phones) */
+      .navbar-brand {
+        font-size: 18px; /* Decrease font size for smaller screens */
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) { /* Medium devices (tablets) */
+      /* Add specific styles for medium devices if needed */
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) { /* Large devices (desktops) */
+      /* Add specific styles for large devices if needed */
+    }
+
+    @media (min-width: 1200px) { /* Extra large devices (large desktops) */
+      /* Add specific styles for extra large devices if needed */
+    }
     }
   </style>
 
@@ -87,14 +106,16 @@
   <nav class="navbar navbar-light navbar-expand-lg bg-white">
     <div class="container">
       <a class="navbar-brand" href="/store">
-        Venus Fly Traps R' Us
+        <img src="https://cdn-icons-png.flaticon.com/512/6284/6284806.png" style="width: 55px; height: 55px; margin-right: 10px;">
+          FlyTrap Emporium
       </a>
       <ul class="navbar-nav mr-auto cart">
         <li class="nav-item">
-          <span class="badge badge-success">{{request.session.cart.keys|length}}</span>
+          
 
           <a class="nav-link" href="/cart">
-            <i class="fas fa-shopping-cart"></i> Cart
+            
+            <i class="fas fa-shopping-cart" > Cart [ {{request.session.cart.keys|length}} ]</i> 
           </a>
         </li>
       </ul>
